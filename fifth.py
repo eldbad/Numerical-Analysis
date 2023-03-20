@@ -1,19 +1,13 @@
 def calculate(lst):
+    print("Кубический сплайн")
     cube_poly(lst)
 
 
 def cube_poly(lst):
     x_diff = [round(lst[i][0] - lst[i-1][0], 4) for i in range(1, len(lst))]
     second_coeffs = [2 * (x_diff[i-1] + x_diff[i]) for i in range(1, len(x_diff))]
-    
     y_diff = [round(lst[i][1] - lst[i-1][1], 4) for i in range(1, len(lst))]
-    
     d_list = [3 * (y_diff[i] / x_diff[i] - y_diff[i-1] / x_diff[i-1]) for i in range(1, len(y_diff))]
-    print(x_diff)
-    print(second_coeffs)
-    print(y_diff)
-    print(d_list)
-    
     
     coeffs_tri = []
     coeffs_tri.append([0.0, second_coeffs[0], x_diff[1]])
@@ -22,45 +16,62 @@ def cube_poly(lst):
         coeffs_tri[i].append(x_diff[i])
         coeffs_tri[i].append(second_coeffs[i])
         coeffs_tri[i].append(x_diff[i])
-
     coeffs_tri.append([x_diff[-1], second_coeffs[-1], 0.0])
     
     for i, coeff in enumerate(coeffs_tri):
         coeff.append(d_list[i])
 
-    print(coeffs_tri)
+    print("Коэффициенты СЛАУ для нахождения c:", coeffs_tri, end="\n\n")
+    print("Метод прогонки")
     c_coeffs = tridiagonal_matrix_algorithm_copy(coeffs_tri)
     c_coeffs.insert(0, 0.0)
-    print(c_coeffs)
+    print()
+    print("Коэффициенты c:", c_coeffs)
     
     a_coeffs = [lst[i][1] for i in range(0, len(lst)-1)]
-    print(a_coeffs)
+    print("Коэффициенты a:", a_coeffs)
     
     b_coeffs = [y_diff[i] / x_diff[i] - x_diff[i] * (c_coeffs[i+1] + 2 * c_coeffs[i]) / 3 for i in range(len(c_coeffs)-1)]
     b_coeffs.append(y_diff[-1] / x_diff[-1] - 2 * x_diff[-1] * c_coeffs[-1] / 3)
+    print("Коэффициенты b:", b_coeffs)
+    
     d_coeffs = [(c_coeffs[i+1] - c_coeffs[i]) / 3 * x_diff[i] for i in range(len(c_coeffs)-1)]
     d_coeffs.append(c_coeffs[-1] / -3 * x_diff[-1])
+    print("Коэффициенты d:", d_coeffs)
     
-    print(b_coeffs)
-    print(d_coeffs)
-    
+    print("Проверка коэффициентов")
     for i in range(len(c_coeffs)):
-        bo = round(a_coeffs[i] + b_coeffs[i] * x_diff[i] + c_coeffs[i] * (x_diff[i]**2) + d_coeffs[i] * (x_diff[i]**3), 1) == lst[i+1][1]
-        print(bo)
+        answ = round(a_coeffs[i] + b_coeffs[i] * x_diff[i] + c_coeffs[i] * (x_diff[i] ** 2) + d_coeffs[i] * (x_diff[i] ** 3), 1)
+        print(f"Сравнение {answ} и y_{i+1}:", end=" ")
+        print(answ == lst[i+1][1])
+    print()
+
+    print("Функция примет вид:")
+    for i in range(len(c_coeffs)):
+        x = lst[i][0]
+        a = round(a_coeffs[i], 2)
+        b = round(b_coeffs[i], 2)
+        c = round(c_coeffs[i], 2)
+        d = round(d_coeffs[i], 2)
+        print(f"{a} + {b}(x - {x}) + {c}(x - {x})^2 + {d}(x - {x})^3", end=" ")
+        print(f"при x_{i} <= x < x{i + 1}")
+
+    n = int(input("Введите количество x: "))
+    if n < 1:
+        raise ValueError("Неправильно набрано количество x")
     
     xs = []
-    for i in range(len(a_coeffs)):
+    i = 0
+    while i < n:
         x = float(input("Введите x: "))
         
         if x < lst[0][0] or x > lst[-1][0]:
             print("x лежит не в интервале")
-            i -= 1
             continue
         
         xs.append(x)
-        
+        i += 1
     xs.sort()
-    print(xs)
     
     fs = []
     for x in xs:
@@ -71,9 +82,11 @@ def cube_poly(lst):
                 break
         
         f = a_coeffs[k] + b_coeffs[k] * (x - lst[k][0]) + c_coeffs[k] * (x - lst[k][0])**2 + d_coeffs[k] * (x - lst[k][0])**3
+        f = round(f, 2)
         fs.append(f)
     
-    print(fs)
+    print("При значениях x:", xs)
+    print("Значения y будут:", fs)
 
 
 def tridiagonal_matrix_algorithm_copy(abcd):
@@ -97,7 +110,6 @@ def tridiagonal_matrix_algorithm_copy(abcd):
         print(f"x_{i + 1}={x}")
     xs = list(reversed(xs))
 
-    print()
     print("Вычисляем невязки")
     for i, x in enumerate(xs):
         first = xs[i-1] if i >= 0 else 0.0

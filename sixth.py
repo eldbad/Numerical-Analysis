@@ -17,11 +17,21 @@ def least_squares(lst, type):
         table.append([lst[i][0]**4 for i in range(len(lst))])
         table.append([table[2][i] * lst[i][1] for i in range(len(lst))])
 
-    print(table)
     sums = [sum(values) for values in table]
-    print(sums)
     
-    # TODO: Строим наглядную таблицу
+    print(f"i\tx\ty\tx^2\txy", end="")
+    if type == "pol":
+        print(f"\tx^3\tx^4\tx^2y")
+    print()
+    
+    for i in range(len(table[0])):
+        print(i+1, end="\t")
+        for j in range(len(table)):
+            print(f"{table[j][i]}", end="\t")
+        print()
+    print("Sum", end="\t2")
+    [print(el, end="\t") for el in sums]
+    print("\n")
     
     if type == "lin":
         linear_coeffs = gauss_method([
@@ -41,6 +51,7 @@ def least_squares(lst, type):
 
 
 def gauss_method(coeffs):
+    print("Метод Гаусса:")
     print(f"Начальные коэффициенты:\n{coeffs}")
     print("---------------")
 
@@ -85,7 +96,7 @@ def gauss_method(coeffs):
     print()
     xs = list(reversed(xs))
     xs = [round(x, 2) for x in xs]
-    print(f"Ответ: {xs}")
+    print(f"Имеем коэффициенты: {xs}")
     
     return xs
 
@@ -97,10 +108,10 @@ def find_y_by_x(coeffs, type):
         x = float(x)
         if type == "lin":
             y = coeffs[0] * x + coeffs[1]
-            print(f"y_{i + 1} = {y}")
+            print(f"x_{i + 1} = {x}; y_{i + 1} = {y}")
         if type == "pol":
             y = coeffs[0] * (x ** 2) + coeffs[1] * x + coeffs[2]
-            print(f"y_{i + 1} = {y}")
+            print(f"x_{i + 1} = {x}; y_{i + 1} = {y}")
             
             
 if __name__ == "__main__":
