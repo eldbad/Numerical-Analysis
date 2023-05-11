@@ -2,10 +2,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def make_graph():
+def make_graph(a_coeffs, b_coeffs, c_coeffs, d_coeffs):
     """Построение графика"""
     # Данные
     x = np.linspace(-2, 2)
+    ys = []
+    for i in range(len(lst)):
+        
     y1 = x**3
     y2 = 1.2 - 0.4 * x
 

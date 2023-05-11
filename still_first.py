@@ -95,4 +95,4 @@ def newton_method(func, first_deriv, second_deriv, a, b):
 # Начало программы
 if __name__ == "__main__":
     # Отправляем функцию в метод для рассчётов
-    calculate(lambda x: x**3 + 0.4*x - 1.2, 0.5, 1)
+    calculate(lambda x: x**3 + 2*x + 4, 0.5, 1)

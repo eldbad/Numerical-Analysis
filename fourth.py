@@ -95,7 +95,7 @@ def print_polynom(results):
 
 if __name__ == "__main__":
     calculate([
-        [-2, 1],
-        [1, 4],
-        [4, 1]
+        [0, 2],
+        [2, 0],
+        [3, 4]
     ])

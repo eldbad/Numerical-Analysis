@@ -80,8 +80,8 @@ def find_coeffs_from_str(*args):
 
 if __name__ == '__main__':
     tridiagonal_matrix_algorithm(
-        "6x1+3x2=7",
-        "x1-2x2+0.3x3=4.3",
-        "2x2+3x3-x4=3",
-        "-x3+4x4=8"
+        "3x1+2x2=9",
+        "-x1-5x2+3x3=-18",
+        "-2x2+7x3+4x4=-6",
+        "3x3+5x4=-6"
     )

@@ -18,7 +18,6 @@ def least_squares(lst, type):
         table.append([table[2][i] * lst[i][1] for i in range(len(lst))])
 
     sums = [sum(values) for values in table]
-    
     print(f"i\tx\ty\tx^2\txy", end="")
     if type == "pol":
         print(f"\tx^3\tx^4\tx^2y")
@@ -29,7 +28,7 @@ def least_squares(lst, type):
         for j in range(len(table)):
             print(f"{table[j][i]}", end="\t")
         print()
-    print("Sum", end="\t2")
+    print("Sum", end="\t")
     [print(el, end="\t") for el in sums]
     print("\n")
     
